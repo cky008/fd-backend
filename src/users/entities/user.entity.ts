@@ -27,12 +27,12 @@ export class User extends CoreEntity {
   @IsEmail()
   email: string;
 
-  @Field(() => String)
   @Column()
+  @Field(() => String)
   password: string;
 
+  @Column({ type: 'enum', enum: UserRole })
   @Field(() => UserRole)
-  @Column({ type: 'enum', enum: UserRole, default: UserRole.Customer })
   @IsEnum(UserRole)
   role: UserRole;
 
@@ -42,6 +42,7 @@ export class User extends CoreEntity {
     try {
       this.password = await bcrypt.hash(this.password, 10);
     } catch (error) {
+      console.log(error);
       throw new InternalServerErrorException();
     }
   }

@@ -8,7 +8,7 @@ import { JwtService } from 'src/jwt/jwt.service';
 import { EditProfileInput } from 'src/users/dtos/edit-profile.dto';
 
 @Injectable()
-export class UsersService {
+export class UserService {
   constructor(
     @InjectRepository(User) private readonly users: Repository<User>,
     private readonly jwtService: JwtService,
@@ -49,11 +49,10 @@ export class UsersService {
       const passwordCorrect = await user.checkPassword(password);
       if (!passwordCorrect) {
         return { ok: false, error: 'Wrong password' };
-      } else {
-        // make a JWT and give it to the user
-        const token = this.jwtService.sign(user.id);
-        return { ok: true, token };
       }
+      // make a JWT and give it to the user
+      const token = this.jwtService.sign(user.id);
+      return { ok: true, token };
     } catch (error) {
       return { ok: false, error: "Can't log user in." };
     }

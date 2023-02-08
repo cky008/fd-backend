@@ -13,23 +13,24 @@ import {
 import { LoginInput, LoginOutput } from './dtos/login.dto';
 import { UserProfileInput, UserProfileOutput } from './dtos/user-profile.dto';
 import { User } from './entities/user.entity';
-import { UsersService } from './users.service';
+import { UserService } from './users.service';
 
-@Resolver()
-export class UsersResolver {
-  constructor(private readonly usersService: UsersService) {}
-
-  @Query(() => Boolean)
-  hi(): boolean {
-    return true;
-  }
+@Resolver(() => User)
+export class UserResolver {
+  constructor(private readonly usersService: UserService) {}
 
   @Mutation(() => CreateAccountOutput)
   async createAccount(
     @Args('input') createAccountInput: CreateAccountInput,
   ): Promise<CreateAccountOutput> {
     try {
-      return this.usersService.createAccount(createAccountInput);
+      const { ok, error } = await this.usersService.createAccount(
+        createAccountInput,
+      );
+      return {
+        ok,
+        error,
+      };
     } catch (error) {
       return {
         error,
@@ -41,7 +42,8 @@ export class UsersResolver {
   @Mutation(() => LoginOutput)
   async login(@Args('input') loginInput: LoginInput): Promise<LoginOutput> {
     try {
-      return this.usersService.login(loginInput);
+      const { ok, error, token } = await this.usersService.login(loginInput);
+      return { ok, error, token };
     } catch (error) {
       return {
         ok: false,
@@ -50,18 +52,14 @@ export class UsersResolver {
     }
   }
 
-  @Query(() => User)
   @UseGuards(AuthGuard)
+  @Query(() => User)
   me(@AuthUser() authUser: User) {
-    if (!authUser) {
-      return null;
-    } else {
-      return authUser;
-    }
+    return authUser;
   }
 
-  @Query(() => UserProfileOutput)
   @UseGuards(AuthGuard)
+  @Query(() => UserProfileOutput)
   async userProfile(
     @Args() userProfileInput: UserProfileInput,
   ): Promise<UserProfileOutput> {
@@ -82,8 +80,8 @@ export class UsersResolver {
     }
   }
 
-  @Mutation(() => EditProfileOutput)
   @UseGuards(AuthGuard)
+  @Mutation(() => EditProfileOutput)
   async editProfile(
     @AuthUser() authUser: User,
     @Args('input') editProfileInput: EditProfileInput,
