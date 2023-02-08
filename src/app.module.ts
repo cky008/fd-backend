@@ -13,6 +13,7 @@ import { User } from './users/entities/user.entity';
 import { UsersModule } from './users/users.module';
 import { JwtModule } from './jwt/jwt.module';
 import { JwtMiddleware } from './jwt/jwt.middleware';
+import { Verification } from './users/entities/verification.entity';
 // import { AuthModule } from './auth/auth.module';
 // import { CommonModule } from './common/common.module';
 // import { AppController } from './app.controller';
@@ -48,7 +49,7 @@ import { JwtMiddleware } from './jwt/jwt.middleware';
       database: process.env.DB_NAME,
       synchronize: process.env.NODE_ENV !== 'prod',
       logging: process.env.NODE_ENV !== 'prod',
-      entities: [User],
+      entities: [User, Verification],
     }),
     JwtModule.forRoot({
       secretKey: process.env.SECRET_KEY,
