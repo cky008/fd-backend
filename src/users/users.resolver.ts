@@ -5,7 +5,7 @@ import { AuthGuard } from 'src/auth/auth.guard';
 import {
   EditProfileInput,
   EditProfileOutput,
-} from 'src/common/dtos/edit-profile.dto';
+} from 'src/users/dtos/edit-profile.dto';
 import {
   CreateAccountInput,
   CreateAccountOutput,
