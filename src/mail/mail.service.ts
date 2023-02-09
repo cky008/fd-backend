@@ -8,16 +8,17 @@ import { MailModuleOptions } from './mail.interfaces';
 export class MailService {
   constructor(
     @Inject(CONFIG_OPTIONS) private readonly options: MailModuleOptions,
-  ) {
-    this.sendEmail('test', 'test', `greatcky83@gmail.com`);
-  }
+  ) {}
 
-  private async sendEmail(subject: string, content: string, to: string) {
+  private async sendEmail(subject: string, template: string, to: string) {
     const form = new FormData();
     form.append('from', `FooDelivery <mailgun@${this.options.domain}>`);
     form.append('to', to);
     form.append('subject', subject);
-    form.append('text', content);
+    form.append('template', template);
+    form.append('v:code', 'test_code');
+    form.append('v:username', 'greatcky83');
+    // form.append('text', content);
     // const url = 'https://api.mailgun.net/v3/${this.options.domain}/messages';
     // const options = {
     //   headers: {
