@@ -27,22 +27,29 @@ export class User extends CoreEntity {
   @IsEmail()
   email: string;
 
+  @Column({ select: false })
   @Field(() => String)
-  @Column()
   password: string;
 
+  @Column({ type: 'enum', enum: UserRole })
   @Field(() => UserRole)
-  @Column({ type: 'enum', enum: UserRole, default: UserRole.Customer })
   @IsEnum(UserRole)
   role: UserRole;
+
+  @Column({ default: false })
+  @Field(() => Boolean)
+  verified: boolean;
 
   @BeforeInsert()
   @BeforeUpdate()
   async hashPassword(): Promise<void> {
-    try {
-      this.password = await bcrypt.hash(this.password, 10);
-    } catch (error) {
-      throw new InternalServerErrorException();
+    if (this.password) {
+      try {
+        this.password = await bcrypt.hash(this.password, 10);
+      } catch (error) {
+        console.log(error);
+        throw new InternalServerErrorException();
+      }
     }
   }
 

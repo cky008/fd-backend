@@ -133,3 +133,4 @@ dist
 
 # other files
 others
+.DS_Store
