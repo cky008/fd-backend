@@ -19,12 +19,13 @@ export class MailService {
     const form = new FormData();
     form.append(
       'from',
-      `FooDelivery Support Team <mailgun@${this.options.domain}>`,
+      `FooDelivery Support Team <foodelivery@${this.options.domain}>`,
     );
     form.append('to', to);
     form.append('subject', subject);
     form.append('template', template);
     emailVars.forEach((eVar) => form.append(`v:${eVar.key}`, eVar.value));
+    //v:username, 'greatcky83'
     // form.append('v:code', 'test_code');
     // form.append('v:username', 'greatcky83');
     // form.append('text', content);
