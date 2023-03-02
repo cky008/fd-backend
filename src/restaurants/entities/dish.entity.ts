@@ -44,7 +44,7 @@ export class Dish extends CoreEntity {
   @Column({ nullable: true })
   @Field(() => String, { nullable: true })
   @IsString()
-  photo: string;
+  photo?: string;
 
   @Column()
   @Field(() => String)
@@ -53,6 +53,7 @@ export class Dish extends CoreEntity {
   description: string;
 
   @ManyToOne(() => Restaurant, (restaurant) => restaurant.menu, {
+    nullable: false,
     onDelete: 'CASCADE',
   })
   @Field(() => Restaurant)

@@ -9,10 +9,12 @@ import {
   CreateRestaurantInput,
   CreateRestaurantOutput,
 } from './dtos/create-restaurant.dto';
+import { DeleteDishInput, DeleteDishOutput } from './dtos/delete-dish.dto';
 import {
   DeleteRestaurantInput,
   DeleteRestaurantOutput,
 } from './dtos/delete-restaurant.dto';
+import { EditDishInput, EditDishOutput } from './dtos/edit-dish.dto';
 import {
   EditRestaurantInput,
   EditRestaurantOutput,
@@ -52,6 +54,7 @@ export class RestaurantService {
       await this.restaurants.save(newRestaurant);
       return { ok: true };
     } catch (error) {
+      console.log(error);
       return { ok: false, error: 'Could not create restaurant' };
     }
   }
@@ -88,6 +91,7 @@ export class RestaurantService {
       ]);
       return { ok: true };
     } catch (error) {
+      console.log(error);
       return { ok: false, error: 'Could not edit restaurant' };
     }
   }
@@ -112,6 +116,7 @@ export class RestaurantService {
       await this.restaurants.delete(restaurant.id);
       return { ok: true };
     } catch (error) {
+      console.log(error);
       return { ok: false, error: 'Could not delete restaurant' };
     }
   }
@@ -121,6 +126,7 @@ export class RestaurantService {
       const categories = await this.categories.find();
       return { ok: true, categories };
     } catch (error) {
+      console.log(error);
       return { ok: false, error: 'Could not load categories' };
     }
   }
@@ -156,6 +162,7 @@ export class RestaurantService {
         totalPages: Math.ceil(totalResults / 25),
       };
     } catch (error) {
+      console.log(error);
       return { ok: false, error: 'Could not load category' };
     }
   }
@@ -173,6 +180,7 @@ export class RestaurantService {
         totalResults,
       };
     } catch (error) {
+      console.log(error);
       return {
         ok: false,
         error: 'Could not load restaurants',
@@ -194,6 +202,7 @@ export class RestaurantService {
         restaurant,
       };
     } catch (error) {
+      console.log(error);
       return { ok: false, error: 'Could not find restaurant' };
     }
   }
@@ -236,7 +245,7 @@ export class RestaurantService {
       if (owner.id !== restaurant.ownerId) {
         return {
           ok: false,
-          error: "You can not create dishes for the restaurant you don't own",
+          error: "You can't create dishes for the restaurant you don't own",
         };
       }
       console.log(restaurant);
@@ -252,6 +261,62 @@ export class RestaurantService {
         ok: false,
         error: 'Could not create dish',
       };
+    }
+  }
+
+  async editDish(
+    owner: User,
+    editDishInput: EditDishInput,
+  ): Promise<EditDishOutput> {
+    try {
+      const dish = await this.dishes.findOne({
+        where: { id: editDishInput.dishId },
+        relations: ['restaurant'],
+      });
+      if (!dish) {
+        return { ok: false, error: 'Dish not found' };
+      }
+      if (owner.id !== dish.restaurant.ownerId) {
+        return {
+          ok: false,
+          error: "You can't edit dishes for the restaurant you don't own",
+        };
+      }
+      await this.dishes.save([{ id: editDishInput.dishId, ...editDishInput }]);
+      return { ok: true };
+    } catch (error) {
+      console.log(error);
+      return { ok: false, error: 'Could not edit dish' };
+    }
+  }
+
+  async deleteDish(
+    owner,
+    { dishId }: DeleteDishInput,
+  ): Promise<DeleteDishOutput> {
+    try {
+      const dish = await this.dishes.findOne({
+        where: { id: dishId },
+        relations: ['restaurant'],
+      });
+      console.log(dish);
+      if (!dish) {
+        return {
+          ok: false,
+          error: 'Dish not found',
+        };
+      }
+      if (owner.id !== dish.restaurant.ownerId) {
+        return {
+          ok: false,
+          error: "You can't delete dishes for the restaurant you don't own",
+        };
+      }
+      await this.dishes.delete(dish.id);
+      return { ok: true };
+    } catch (error) {
+      console.log(error);
+      return { ok: false, error: 'Could not delete dish' };
     }
   }
 }
