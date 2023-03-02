@@ -1,0 +1,117 @@
+Date : 2023-03-02 21:30:50
+Directory : /Users/fa2nica/Documents/fd-backend
+Total : 64 files,  12260 codes, 55 comments, 248 blanks, all 12563 lines
+
+Languages
++--------------------+------------+------------+------------+------------+------------+
+| language           | files      | code       | comment    | blank      | total      |
++--------------------+------------+------------+------------+------------+------------+
+| JSON               |          5 |     10,429 |         21 |          3 |     10,453 |
+| TypeScript         |         56 |      1,774 |         34 |        239 |      2,047 |
+| JavaScript         |          1 |         25 |          0 |          1 |         26 |
+| JSON with Comments |          1 |         21 |          0 |          1 |         22 |
+| Markdown           |          1 |         11 |          0 |          4 |         15 |
++--------------------+------------+------------+------------+------------+------------+
+
+Directories
++-----------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                    | files      | code       | comment    | blank      | total      |
++-----------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                       |         64 |     12,260 |         55 |        248 |     12,563 |
+| . (Files)                                                                               |          7 |     10,477 |         21 |          8 |     10,506 |
+| src                                                                                     |         55 |      1,754 |         34 |        234 |      2,022 |
+| src (Files)                                                                             |          2 |        101 |          2 |          4 |        107 |
+| src/auth                                                                                |          4 |         49 |          0 |          9 |         58 |
+| src/common                                                                              |          5 |         44 |          0 |         14 |         58 |
+| src/common (Files)                                                                      |          2 |          4 |          0 |          3 |          7 |
+| src/common/dtos                                                                         |          2 |         22 |          0 |          7 |         29 |
+| src/common/entities                                                                     |          1 |         18 |          0 |          4 |         22 |
+| src/db                                                                                  |          2 |         39 |          1 |          9 |         49 |
+| src/jwt                                                                                 |          4 |         64 |          1 |          9 |         74 |
+| src/mail                                                                                |          3 |         81 |         14 |          8 |        103 |
+| src/orders                                                                              |          6 |        166 |          0 |         27 |        193 |
+| src/orders (Files)                                                                      |          3 |         67 |          0 |          8 |         75 |
+| src/orders/dtos                                                                         |          1 |         19 |          0 |          6 |         25 |
+| src/orders/entities                                                                     |          2 |         80 |          0 |         13 |         93 |
+| src/restaurants                                                                         |         18 |        762 |          0 |         93 |        855 |
+| src/restaurants (Files)                                                                 |          3 |        467 |          0 |         32 |        499 |
+| src/restaurants/dtos                                                                    |         11 |        150 |          0 |         33 |        183 |
+| src/restaurants/entities                                                                |          3 |        126 |          0 |         26 |        152 |
+| src/restaurants/repositories                                                            |          1 |         19 |          0 |          2 |         21 |
+| src/users                                                                               |         11 |        448 |         16 |         61 |        525 |
+| src/users (Files)                                                                       |          4 |        308 |          9 |         30 |        347 |
+| src/users/dtos                                                                          |          5 |         50 |          7 |         15 |         72 |
+| src/users/entities                                                                      |          2 |         90 |          0 |         16 |        106 |
+| test                                                                                    |          2 |         29 |          0 |          6 |         35 |
++-----------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++-----------------------------------------------------------------------------------------+--------------------+------------+------------+------------+------------+
+| filename                                                                                | language           | code       | comment    | blank      | total      |
++-----------------------------------------------------------------------------------------+--------------------+------------+------------+------------+------------+
+| /Users/fa2nica/Documents/fd-backend/.eslintrc.js                                        | JavaScript         |         25 |          0 |          1 |         26 |
+| /Users/fa2nica/Documents/fd-backend/README.md                                           | Markdown           |         11 |          0 |          4 |         15 |
+| /Users/fa2nica/Documents/fd-backend/nest-cli.json                                       | JSON               |          8 |          0 |          1 |          9 |
+| /Users/fa2nica/Documents/fd-backend/package-lock.json                                   | JSON               |     10,322 |          0 |          1 |     10,323 |
+| /Users/fa2nica/Documents/fd-backend/package.json                                        | JSON               |         87 |         19 |          0 |        106 |
+| /Users/fa2nica/Documents/fd-backend/src/app.module.ts                                   | TypeScript         |         92 |          2 |          2 |         96 |
+| /Users/fa2nica/Documents/fd-backend/src/auth/auth-user.decorator.ts                     | TypeScript         |          9 |          0 |          2 |         11 |
+| /Users/fa2nica/Documents/fd-backend/src/auth/auth.guard.ts                              | TypeScript         |         24 |          0 |          2 |         26 |
+| /Users/fa2nica/Documents/fd-backend/src/auth/auth.module.ts                             | TypeScript         |         12 |          0 |          2 |         14 |
+| /Users/fa2nica/Documents/fd-backend/src/auth/role.decorator.ts                          | TypeScript         |          4 |          0 |          3 |          7 |
+| /Users/fa2nica/Documents/fd-backend/src/common/common.constants.ts                      | TypeScript         |          1 |          0 |          1 |          2 |
+| /Users/fa2nica/Documents/fd-backend/src/common/common.module.ts                         | TypeScript         |          3 |          0 |          2 |          5 |
+| /Users/fa2nica/Documents/fd-backend/src/common/dtos/output.dto.ts                       | TypeScript         |          8 |          0 |          3 |         11 |
+| /Users/fa2nica/Documents/fd-backend/src/common/dtos/pagination.dto.ts                   | TypeScript         |         14 |          0 |          4 |         18 |
+| /Users/fa2nica/Documents/fd-backend/src/common/entities/core.entity.ts                  | TypeScript         |         18 |          0 |          4 |         22 |
+| /Users/fa2nica/Documents/fd-backend/src/db/typeorm-custom.module.ts                     | TypeScript         |         34 |          0 |          6 |         40 |
+| /Users/fa2nica/Documents/fd-backend/src/db/typeorm.decorator.ts                         | TypeScript         |          5 |          1 |          3 |          9 |
+| /Users/fa2nica/Documents/fd-backend/src/jwt/jwt.interfaces.ts                           | TypeScript         |          3 |          0 |          1 |          4 |
+| /Users/fa2nica/Documents/fd-backend/src/jwt/jwt.middleware.ts                           | TypeScript         |         24 |          1 |          2 |         27 |
+| /Users/fa2nica/Documents/fd-backend/src/jwt/jwt.module.ts                               | TypeScript         |         21 |          0 |          2 |         23 |
+| /Users/fa2nica/Documents/fd-backend/src/jwt/jwt.service.ts                              | TypeScript         |         16 |          0 |          4 |         20 |
+| /Users/fa2nica/Documents/fd-backend/src/mail/mail.interfaces.ts                         | TypeScript         |          9 |          0 |          2 |         11 |
+| /Users/fa2nica/Documents/fd-backend/src/mail/mail.module.ts                             | TypeScript         |         23 |          0 |          2 |         25 |
+| /Users/fa2nica/Documents/fd-backend/src/mail/mail.service.ts                            | TypeScript         |         49 |         14 |          4 |         67 |
+| /Users/fa2nica/Documents/fd-backend/src/main.ts                                         | TypeScript         |          9 |          0 |          2 |         11 |
+| /Users/fa2nica/Documents/fd-backend/src/orders/dtos/create-order.dto.ts                 | TypeScript         |         19 |          0 |          6 |         25 |
+| /Users/fa2nica/Documents/fd-backend/src/orders/entities/order-item.entity.ts            | TypeScript         |         25 |          0 |          4 |         29 |
+| /Users/fa2nica/Documents/fd-backend/src/orders/entities/order.entity.ts                 | TypeScript         |         55 |          0 |          9 |         64 |
+| /Users/fa2nica/Documents/fd-backend/src/orders/orders.module.ts                         | TypeScript         |         11 |          0 |          2 |         13 |
+| /Users/fa2nica/Documents/fd-backend/src/orders/orders.resolver.ts                       | TypeScript         |         19 |          0 |          3 |         22 |
+| /Users/fa2nica/Documents/fd-backend/src/orders/orders.service.ts                        | TypeScript         |         37 |          0 |          3 |         40 |
+| /Users/fa2nica/Documents/fd-backend/src/restaurants/dtos/all-categories.dto.ts          | TypeScript         |          8 |          0 |          2 |         10 |
+| /Users/fa2nica/Documents/fd-backend/src/restaurants/dtos/category.dto.ts                | TypeScript         |         19 |          0 |          4 |         23 |
+| /Users/fa2nica/Documents/fd-backend/src/restaurants/dtos/create-dish.dto.ts             | TypeScript         |         15 |          0 |          3 |         18 |
+| /Users/fa2nica/Documents/fd-backend/src/restaurants/dtos/create-restaurant.dto.ts       | TypeScript         |         14 |          0 |          3 |         17 |
+| /Users/fa2nica/Documents/fd-backend/src/restaurants/dtos/delete-dish.dto.ts             | TypeScript         |          9 |          0 |          3 |         12 |
+| /Users/fa2nica/Documents/fd-backend/src/restaurants/dtos/delete-restaurant.dto.ts       | TypeScript         |          9 |          0 |          3 |         12 |
+| /Users/fa2nica/Documents/fd-backend/src/restaurants/dtos/edit-dish.dto.ts               | TypeScript         |         23 |          0 |          3 |         26 |
+| /Users/fa2nica/Documents/fd-backend/src/restaurants/dtos/edit-restaurant.dto.ts         | TypeScript         |         11 |          0 |          3 |         14 |
+| /Users/fa2nica/Documents/fd-backend/src/restaurants/dtos/restaurant.dto.ts              | TypeScript         |         13 |          0 |          3 |         16 |
+| /Users/fa2nica/Documents/fd-backend/src/restaurants/dtos/restaurants.dto.ts             | TypeScript         |         13 |          0 |          3 |         16 |
+| /Users/fa2nica/Documents/fd-backend/src/restaurants/dtos/search-restaurant.dto.ts       | TypeScript         |         16 |          0 |          3 |         19 |
+| /Users/fa2nica/Documents/fd-backend/src/restaurants/entities/category.entity.ts         | TypeScript         |         26 |          0 |          5 |         31 |
+| /Users/fa2nica/Documents/fd-backend/src/restaurants/entities/dish.entity.ts             | TypeScript         |         57 |          0 |         12 |         69 |
+| /Users/fa2nica/Documents/fd-backend/src/restaurants/entities/restaurant.entity.ts       | TypeScript         |         43 |          0 |          9 |         52 |
+| /Users/fa2nica/Documents/fd-backend/src/restaurants/repositories/category.repository.ts | TypeScript         |         19 |          0 |          2 |         21 |
+| /Users/fa2nica/Documents/fd-backend/src/restaurants/restaurants.module.ts               | TypeScript         |         26 |          0 |          2 |         28 |
+| /Users/fa2nica/Documents/fd-backend/src/restaurants/restaurants.resolver.ts             | TypeScript         |        132 |          0 |         16 |        148 |
+| /Users/fa2nica/Documents/fd-backend/src/restaurants/restaurants.service.ts              | TypeScript         |        309 |          0 |         14 |        323 |
+| /Users/fa2nica/Documents/fd-backend/src/users/dtos/create-account.dto.ts                | TypeScript         |         11 |          7 |          4 |         22 |
+| /Users/fa2nica/Documents/fd-backend/src/users/dtos/edit-profile.dto.ts                  | TypeScript         |          9 |          0 |          3 |         12 |
+| /Users/fa2nica/Documents/fd-backend/src/users/dtos/login.dto.ts                         | TypeScript         |         10 |          0 |          3 |         13 |
+| /Users/fa2nica/Documents/fd-backend/src/users/dtos/user-profile.dto.ts                  | TypeScript         |         13 |          0 |          3 |         16 |
+| /Users/fa2nica/Documents/fd-backend/src/users/dtos/verify-email.dto.ts                  | TypeScript         |          7 |          0 |          2 |          9 |
+| /Users/fa2nica/Documents/fd-backend/src/users/entities/user.entity.ts                   | TypeScript         |         70 |          0 |         12 |         82 |
+| /Users/fa2nica/Documents/fd-backend/src/users/entities/verification.entity.ts           | TypeScript         |         20 |          0 |          4 |         24 |
+| /Users/fa2nica/Documents/fd-backend/src/users/user.service.spec.ts                      | TypeScript         |        118 |          2 |         13 |        133 |
+| /Users/fa2nica/Documents/fd-backend/src/users/users.module.ts                           | TypeScript         |         12 |          0 |          2 |         14 |
+| /Users/fa2nica/Documents/fd-backend/src/users/users.resolver.ts                         | TypeScript         |         56 |          0 |          8 |         64 |
+| /Users/fa2nica/Documents/fd-backend/src/users/users.service.ts                          | TypeScript         |        122 |          7 |          7 |        136 |
+| /Users/fa2nica/Documents/fd-backend/test/app.e2e-spec.ts                                | TypeScript         |         20 |          0 |          5 |         25 |
+| /Users/fa2nica/Documents/fd-backend/test/jest-e2e.json                                  | JSON               |          9 |          0 |          1 |         10 |
+| /Users/fa2nica/Documents/fd-backend/tsconfig.build.json                                 | JSON               |          3 |          2 |          0 |          5 |
+| /Users/fa2nica/Documents/fd-backend/tsconfig.json                                       | JSON with Comments |         21 |          0 |          1 |         22 |
+| Total                                                                                   |                    |     12,260 |         55 |        248 |     12,563 |
++-----------------------------------------------------------------------------------------+--------------------+------------+------------+------------+------------+
