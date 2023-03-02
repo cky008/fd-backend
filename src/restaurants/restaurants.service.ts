@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/users/entities/user.entity';
 import { Repository } from 'typeorm';
+import { AllCategoriesOutput } from './dtos/all-categories.dto';
 import {
   CreateRestaurantInput,
   CreateRestaurantOutput,
@@ -25,20 +26,6 @@ export class RestaurantService {
     private readonly restaurants: Repository<Restaurant>,
     private readonly categories: CategoryRepository,
   ) {}
-
-  // async getOrCreateCategory(name: string): Promise<Category> {
-  //   const categoryName = name.trim().toLowerCase();
-  //   const categorySlug = categoryName.replace(/ /g, '-');
-  //   let category = await this.categories.findOne({
-  //     where: { slug: categorySlug },
-  //   });
-  //   if (!category) {
-  //     category = await this.categories.save(
-  //       this.categories.create({ name: categoryName, slug: categorySlug }),
-  //     );
-  //   }
-  //   return category;
-  // }
 
   async createRestaurant(
     owner: User,
@@ -117,5 +104,18 @@ export class RestaurantService {
     } catch (error) {
       return { ok: false, error: 'Could not delete restaurant' };
     }
+  }
+
+  async allCategories(): Promise<AllCategoriesOutput> {
+    try {
+      const categories = await this.categories.find();
+      return { ok: true, categories };
+    } catch (error) {
+      return { ok: false, error: 'Could not load categories' };
+    }
+  }
+
+  countRestaurants(category: Category) {
+    return this.restaurants.count({ where: { category: { id: category.id } } });
   }
 }
