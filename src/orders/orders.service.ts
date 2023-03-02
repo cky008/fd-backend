@@ -36,16 +36,13 @@ export class OrderService {
         };
       }
       let orderFinalPrice = 0;
-      // let orderItems: OrderItem[] = [];
       const orderItems: OrderItem[] = [];
       for (const item of items) {
-        // console.log(item.options);
         const dish = await this.dishes.findOne({ where: { id: item.dishId } });
         if (!dish) {
           return { ok: false, error: 'Dish not found' };
         }
         let dishFinalPrice = dish.price;
-        // console.log(`Dish price: ${dish.price}`);
         for (const itemOption of item.options) {
           const dishOption = dish.options.find(
             (dishOption) => dishOption.name === itemOption.name,
@@ -53,7 +50,6 @@ export class OrderService {
           if (dishOption) {
             if (dishOption.extra) {
               dishFinalPrice += dishOption.extra;
-              // console.log(`€EUR + ${dishOption.extra}`);
             } else {
               const dishOptionChoice = dishOption.choices.find(
                 (optionChoice) => optionChoice.name === itemOption.choice,
@@ -61,7 +57,6 @@ export class OrderService {
               if (dishOptionChoice) {
                 if (dishOptionChoice.extra) {
                   dishFinalPrice += dishOptionChoice.extra;
-                  // console.log(`€EUR + ${dishOptionChoice.extra}`);
                 }
               }
             }
@@ -76,7 +71,7 @@ export class OrderService {
         );
         orderItems.push(orderItem);
       }
-      const order = await this.orders.save(
+      await this.orders.save(
         this.orders.create({
           customer,
           restaurant,
@@ -84,7 +79,6 @@ export class OrderService {
           items: orderItems,
         }),
       );
-      console.log(order);
       return { ok: true };
     } catch (error) {
       return { ok: false, error: 'Could not create order' };
