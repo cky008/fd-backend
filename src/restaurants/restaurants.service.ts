@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/users/entities/user.entity';
 import { Repository } from 'typeorm';
 import { AllCategoriesOutput } from './dtos/all-categories.dto';
+import { CategoryInput, CategoryOutput } from './dtos/category.dto';
 import {
   CreateRestaurantInput,
   CreateRestaurantOutput,
@@ -29,15 +30,14 @@ export class RestaurantService {
 
   async createRestaurant(
     owner: User,
-    createRestarurantInput: CreateRestaurantInput,
+    createRestaurantInput: CreateRestaurantInput,
   ): Promise<CreateRestaurantOutput> {
     try {
-      const newRestaurant = this.restaurants.create(createRestarurantInput);
+      const newRestaurant = this.restaurants.create(createRestaurantInput);
       newRestaurant.owner = owner;
       const category = await this.categories.getOrCreate(
-        createRestarurantInput.categoryName,
+        createRestaurantInput.categoryName,
       );
-
       newRestaurant.category = category;
       await this.restaurants.save(newRestaurant);
       return { ok: true };
@@ -48,11 +48,11 @@ export class RestaurantService {
 
   async editRestaurant(
     owner: User,
-    editRestarurantInput: EditRestaurantInput,
+    editRestaurantInput: EditRestaurantInput,
   ): Promise<EditRestaurantOutput> {
     try {
       const restaurant = await this.restaurants.findOne({
-        where: { id: editRestarurantInput.restaurantId },
+        where: { id: editRestaurantInput.restaurantId },
       });
       if (!restaurant) {
         return { ok: false, error: 'Restaurant not found' };
@@ -64,15 +64,15 @@ export class RestaurantService {
         };
       }
       let category: Category = null;
-      if (editRestarurantInput.categoryName) {
+      if (editRestaurantInput.categoryName) {
         category = await this.categories.getOrCreate(
-          editRestarurantInput.categoryName,
+          editRestaurantInput.categoryName,
         );
       }
       await this.restaurants.save([
         {
-          id: editRestarurantInput.restaurantId,
-          ...editRestarurantInput,
+          id: editRestaurantInput.restaurantId,
+          ...editRestaurantInput,
           ...(category && { category }),
         },
       ]);
@@ -115,7 +115,24 @@ export class RestaurantService {
     }
   }
 
-  countRestaurants(category: Category) {
-    return this.restaurants.count({ where: { category: { id: category.id } } });
+  async countRestaurants(category: Category) {
+    return await this.restaurants.count({
+      where: { category: { id: category.id } },
+    });
+  }
+
+  async findCategoryBySlug({ slug }: CategoryInput): Promise<CategoryOutput> {
+    try {
+      const category = await this.categories.findOne({
+        where: { slug },
+        relations: ['restaurants'],
+      });
+      if (!category) {
+        return { ok: false, error: 'Category not found' };
+      }
+      return { ok: true, category };
+    } catch (error) {
+      return { ok: false, error: 'Could not load category' };
+    }
   }
 }

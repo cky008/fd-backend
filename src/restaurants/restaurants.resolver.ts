@@ -10,6 +10,7 @@ import { AuthUser } from 'src/auth/auth-user.decorator';
 import { Role } from 'src/auth/role.decorator';
 import { User } from 'src/users/entities/user.entity';
 import { AllCategoriesOutput } from './dtos/all-categories.dto';
+import { CategoryInput, CategoryOutput } from './dtos/category.dto';
 import {
   CreateRestaurantInput,
   CreateRestaurantOutput,
@@ -32,13 +33,13 @@ export class RestaurantResolver {
 
   @Mutation(() => CreateRestaurantOutput)
   @Role(['Owner'])
-  createRestaurant(
+  async createRestaurant(
     @AuthUser() authUser: User,
-    @Args('input') creatRestarurantInput: CreateRestaurantInput,
+    @Args('input') createRestaurantInput: CreateRestaurantInput,
   ): Promise<CreateRestaurantOutput> {
     return this.restaurantService.createRestaurant(
       authUser,
-      creatRestarurantInput,
+      createRestaurantInput,
     );
   }
 
@@ -46,20 +47,20 @@ export class RestaurantResolver {
   @Role(['Owner'])
   editRestaurant(
     @AuthUser() owner: User,
-    @Args('input') editRestarurantInput: EditRestaurantInput,
+    @Args('input') editRestaurantInput: EditRestaurantInput,
   ): Promise<EditRestaurantOutput> {
-    return this.restaurantService.editRestaurant(owner, editRestarurantInput);
+    return this.restaurantService.editRestaurant(owner, editRestaurantInput);
   }
 
   @Mutation(() => DeleteRestaurantOutput)
   @Role(['Owner'])
   deleteRestaurant(
     @AuthUser() owner: User,
-    @Args('input') deleteRestarurantInput: DeleteRestaurantInput,
+    @Args('input') deleteRestaurantInput: DeleteRestaurantInput,
   ): Promise<DeleteRestaurantOutput> {
     return this.restaurantService.deleteRestaurant(
       owner,
-      deleteRestarurantInput,
+      deleteRestaurantInput,
     );
   }
 }
@@ -76,5 +77,10 @@ export class CategoryResolver {
   @Query(() => AllCategoriesOutput)
   allCategories(): Promise<AllCategoriesOutput> {
     return this.restaurantService.allCategories();
+  }
+
+  @Query(() => CategoryOutput)
+  category(@Args() categoryInput: CategoryInput): Promise<CategoryOutput> {
+    return this.restaurantService.findCategoryBySlug(categoryInput);
   }
 }
