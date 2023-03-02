@@ -10,3 +10,6 @@ Available date of both api and frontend is [to be announced]. And after the pres
 
 ## Tech Stack
 TypeScript, Node.js, React, GraphQL, Tailwind CSS, Nest.JS, TypeORM, PostgreSQL.  
+
+## Others
+nest -> npx @nestjs/cli
