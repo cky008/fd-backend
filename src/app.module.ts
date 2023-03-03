@@ -54,7 +54,9 @@ import { OrderItem } from './orders/entities/order-item.entity';
       ...(process.env.DATABASE_URL
         ? {
             url: process.env.DATABASE_URL,
-            extra: { ssl: true, rejectUnauthorized: false },
+            ssl: {
+              rejectUnauthorized: false,
+            },
           }
         : {
             host: process.env.DB_HOST,
