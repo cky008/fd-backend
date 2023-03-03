@@ -10,5 +10,9 @@ Now this API will automatically deploy to the production environment. You can ac
 ## Tech Stack
 TypeScript, Node.js, React, GraphQL, Tailwind CSS, Nest.JS, TypeORM, PostgreSQL.  
 
+## Github
+[Frontend](https://github.com/cky008/fd-frontend)
+[Backend](https://github.com/cky008/fd-backend)
+
 ## Others
 nest -> npx @nestjs/cli
