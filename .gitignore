@@ -134,3 +134,6 @@ dist
 # other files
 others
 .DS_Store
+
+#Code Count
+/.VSCodeCounter
