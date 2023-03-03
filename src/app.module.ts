@@ -52,7 +52,10 @@ import { OrderItem } from './orders/entities/order-item.entity';
     TypeOrmModule.forRoot({
       type: 'postgres',
       ...(process.env.DATABASE_URL
-        ? { url: process.env.DATABASE_URL }
+        ? {
+            url: process.env.DATABASE_URL,
+            extra: { ssl: true, rejectUnauthorized: false },
+          }
         : {
             host: process.env.DB_HOST,
             port: +process.env.DB_PORT,
