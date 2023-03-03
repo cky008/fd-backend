@@ -44,7 +44,7 @@ import { OrderItem } from './orders/entities/order-item.entity';
       }),
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
-      introspection: process.env.NODE_ENV !== 'production',
+      // introspection: process.env.NODE_ENV !== 'production',
       driver: ApolloDriver,
       cache: 'bounded',
       autoSchemaFile: true,
