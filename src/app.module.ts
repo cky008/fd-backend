@@ -44,12 +44,17 @@ import { OrderItem } from './orders/entities/order-item.entity';
       }),
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
+      installSubscriptionHandlers: true,
       playground: process.env.NODE_ENV !== 'production',
       introspection: process.env.NODE_ENV !== 'production',
       driver: ApolloDriver,
       cache: 'bounded',
       autoSchemaFile: true,
-      context: ({ req }) => ({ user: req['user'] }),
+      context: ({ req }) => {
+        return {
+          user: req['user'],
+        };
+      },
     }),
     TypeOrmModule.forRoot({
       type: 'postgres',
