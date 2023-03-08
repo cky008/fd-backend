@@ -40,6 +40,7 @@ export class MailService {
     // };
     // const response = await got.post(url, options);
     try {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const response = await got(
         `https://api.mailgun.net/v3/${this.options.domain}/messages`,
         {

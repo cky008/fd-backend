@@ -10,7 +10,11 @@ import { GetOrdersOutput, GetOrdersInput } from './dtos/get-orders.dto';
 import { OrderService } from './orders.service';
 import { Inject } from '@nestjs/common';
 import { Order } from './entities/order.entity';
-import { NEW_PENDING_ORDER, PUB_SUB } from 'src/common/common.constants';
+import {
+  NEW_COOKED_ORDER,
+  NEW_PENDING_ORDER,
+  PUB_SUB,
+} from 'src/common/common.constants';
 
 @Resolver(() => Order)
 export class OrderResolver {
@@ -64,5 +68,11 @@ export class OrderResolver {
   @Role(['Owner'])
   pendingOrders() {
     return this.pubSub.asyncIterator(NEW_PENDING_ORDER);
+  }
+
+  @Subscription(() => Order)
+  @Role(['Carrier'])
+  cookedOrders() {
+    return this.pubSub.asyncIterator(NEW_COOKED_ORDER);
   }
 }
