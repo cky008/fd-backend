@@ -56,31 +56,21 @@ export class OrderResolver {
   }
 
   @Mutation(() => Boolean)
-  elsaLoveAnna() {
+  elsaLoveAnna(@Args('times') times: number) {
     this.pubSub.publish('elsa', {
-      elsaAnna: 'Elsa Love Anna.',
+      elsaAnna: times,
     });
     return true;
   }
 
-  @Subscription(() => String)
+  @Subscription(() => String, {
+    filter: ({ elsaAnna }, { times }, context) => {
+      return elsaAnna === times;
+    },
+    resolve: ({ elsaAnna }) => `Elsa loves Anna ${elsaAnna} times.`,
+  })
   @Role(['Any'])
-  elsaAnna(@AuthUser() user: User) {
-    console.log(user);
+  elsaAnna(@Args('times') times: number) {
     return this.pubSub.asyncIterator('elsa');
-  }
-
-  
-  @Mutation(() => Boolean)
-  potatoReady() {
-    this.pubSub.publish('hotPotatos', {
-      readyPotatos: 'Your potato is ready.',
-    });
-    return true;
-  }
-
-  @Subscription(() => String)
-  readyPotatos() {
-    return this.pubSub.asyncIterator('hotPotatos');
   }
 }
