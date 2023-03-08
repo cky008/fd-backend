@@ -79,27 +79,33 @@ export class UserService {
 
   async findById(id: number): Promise<UserProfileOutput> {
     try {
-      const user = await this.users.findOne({ where: { id } });
-      if (user) {
-        return {
-          ok: true,
-          user: user,
-        };
-      }
+      const user = await this.users.findOneOrFail({ where: { id } });
+      return {
+        ok: true,
+        user: user,
+      };
     } catch (error) {
       return { ok: false, error: 'User Not Found' };
     }
   }
 
   async editProfile(
-    id: number,
+    userId: number,
     { email, password }: EditProfileInput,
   ): Promise<EditProfileOutput> {
     try {
-      const user = await this.users.findOne({ where: { id } });
+      const user = await this.users.findOne({ where: { id: userId } });
       if (email) {
+        const isExists = await this.users.count({ where: { email } });
+        if (isExists !== 0) {
+          return {
+            ok: false,
+            error: 'There is a user with that email already.',
+          };
+        }
         user.email = email;
         user.verified = false;
+        await this.verifications.delete({ user: { id: user.id } });
         const verification = await this.verifications.save(
           this.verifications.create({ user }),
         );
@@ -123,13 +129,13 @@ export class UserService {
       });
       if (verification) {
         verification.user.verified = true;
-        this.users.save(verification.user);
+        await this.users.save(verification.user);
         await this.verifications.delete(verification.id);
         return { ok: true };
       }
       return { ok: false, error: 'Verification not found.' };
     } catch (error) {
-      return { ok: false, error };
+      return { ok: false, error: 'Could not verify email.' };
     }
   }
 }

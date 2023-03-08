@@ -24,7 +24,7 @@ registerEnumType(UserRole, { name: 'UserRole' });
 @ObjectType()
 @Entity()
 export class User extends CoreEntity {
-  @Column()
+  @Column({ unique: true })
   @Field(() => String)
   @IsEmail()
   email: string;
@@ -46,7 +46,7 @@ export class User extends CoreEntity {
 
   @OneToMany(() => Restaurant, (restaurant) => restaurant.owner)
   @Field(() => [Restaurant])
-  restaurant: Restaurant[];
+  restaurants: Restaurant[];
 
   @OneToMany(() => Order, (order) => order.customer)
   @Field(() => [Order])
@@ -63,7 +63,6 @@ export class User extends CoreEntity {
       try {
         this.password = await bcrypt.hash(this.password, 10);
       } catch (error) {
-        console.log(error);
         throw new InternalServerErrorException();
       }
     }

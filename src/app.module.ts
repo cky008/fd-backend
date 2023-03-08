@@ -1,10 +1,5 @@
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
-import {
-  MiddlewareConsumer,
-  Module,
-  NestModule,
-  RequestMethod,
-} from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -12,7 +7,6 @@ import * as Joi from 'joi';
 import { User } from './users/entities/user.entity';
 import { UsersModule } from './users/users.module';
 import { JwtModule } from './jwt/jwt.module';
-import { JwtMiddleware } from './jwt/jwt.middleware';
 import { Verification } from './users/entities/verification.entity';
 import { MailModule } from './mail/mail.module';
 import { Restaurant } from './restaurants/entities/restaurant.entity';
@@ -39,7 +33,7 @@ import { OrderItem } from './orders/entities/order-item.entity';
         DB_NAME: Joi.string(),
         SECRET_KEY: Joi.string().required(),
         MAILGUN_API_KEY: Joi.string().required(),
-        MAILGUN_DOMAIN: Joi.string().required(),
+        MAILGUN_DOMAIN_NAME: Joi.string().required(),
         MAILGUN_FROM_EMAIL: Joi.string().required(),
       }),
     }),
@@ -50,10 +44,20 @@ import { OrderItem } from './orders/entities/order-item.entity';
       driver: ApolloDriver,
       cache: 'bounded',
       autoSchemaFile: true,
-      context: ({ req }) => {
-        return {
-          user: req['user'],
-        };
+      subscriptions: {
+        'graphql-ws': true,
+        'subscriptions-transport-ws': {
+          onConnect: (connectionParams: any) => ({
+            token: connectionParams['x-jwt'],
+          }),
+        },
+      },
+      context: ({ req }) => ({
+        token: req.headers['x-jwt'],
+      }),
+      cors: {
+        origin: 'http://localhost:4000',
+        credentials: true,
       },
     }),
     TypeOrmModule.forRoot({
@@ -91,7 +95,7 @@ import { OrderItem } from './orders/entities/order-item.entity';
     UsersModule,
     MailModule.forRoot({
       apiKey: process.env.MAILGUN_API_KEY,
-      domain: process.env.MAILGUN_DOMAIN,
+      domain: process.env.MAILGUN_DOMAIN_NAME,
       fromEmail: process.env.MAILGUN_FROM_EMAIL,
     }),
     RestaurantsModule,
@@ -100,14 +104,5 @@ import { OrderItem } from './orders/entities/order-item.entity';
   ],
   controllers: [],
   providers: [],
-  // controllers: [AppController],
-  // providers: [AppService],
 })
-export class AppModule implements NestModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer.apply(JwtMiddleware).forRoutes({
-      path: '/graphql',
-      method: RequestMethod.POST,
-    });
-  }
-}
+export class AppModule {}

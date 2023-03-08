@@ -9,13 +9,5 @@ export class CreateAccountInput extends PickType(User, [
   'role',
 ]) {}
 
-// @ObjectType()
-// export class CreateAccountOutput {
-//   @Field(() => String, { nullable: true })
-//   error?: string;
-
-//   @Field(() => Boolean)
-//   ok: boolean;
-// }
 @ObjectType()
 export class CreateAccountOutput extends CoreOutput {}

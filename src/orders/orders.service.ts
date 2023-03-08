@@ -1,5 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { PubSub } from 'graphql-subscriptions';
+import { PUB_SUB } from 'src/common/common.constants';
 import { Dish } from 'src/restaurants/entities/dish.entity';
 import { Restaurant } from 'src/restaurants/entities/restaurant.entity';
 import { User, UserRole } from 'src/users/entities/user.entity';
@@ -22,9 +24,11 @@ export class OrderService {
     private readonly restaurants: Repository<Restaurant>,
     @InjectRepository(Dish)
     private readonly dishes: Repository<Dish>,
+    @Inject(PUB_SUB)
+    private readonly pubSub: PubSub,
   ) {}
 
-  async crateOrder(
+  async createOrder(
     customer: User,
     { restaurantId, items }: CreateOrderInput,
   ): Promise<CreateOrderOutput> {
@@ -39,7 +43,7 @@ export class OrderService {
         };
       }
       let orderFinalPrice = 0;
-      const orderItems: OrderItem[] = [];
+      let orderItems: OrderItem[] = [];
       for (const item of items) {
         const dish = await this.dishes.findOne({ where: { id: item.dishId } });
         if (!dish) {
@@ -74,7 +78,7 @@ export class OrderService {
         );
         orderItems.push(orderItem);
       }
-      await this.orders.save(
+      const order = await this.orders.save(
         this.orders.create({
           customer,
           restaurant,
@@ -93,7 +97,7 @@ export class OrderService {
     { status }: GetOrdersInput,
   ): Promise<GetOrdersOutput> {
     try {
-      let orders: Order[];
+      let orders: Order[] = [];
       if (user.role === UserRole.Customer) {
         orders = await this.orders.find({
           where: { customer: { id: user.id } },
@@ -118,7 +122,7 @@ export class OrderService {
         ok: true,
         orders,
       };
-    } catch {
+    } catch (error) {
       return {
         ok: false,
         error: 'Could not get orders',
@@ -221,7 +225,7 @@ export class OrderService {
       return {
         ok: true,
       };
-    } catch {
+    } catch (error) {
       return {
         ok: false,
         error: 'Could not edit order.',

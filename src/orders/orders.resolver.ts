@@ -1,4 +1,4 @@
-import { Mutation, Args, Query, Subscription } from '@nestjs/graphql';
+import { Mutation, Args, Query, Subscription, Resolver } from '@nestjs/graphql';
 import { PubSub } from 'graphql-subscriptions';
 import { AuthUser } from 'src/auth/auth-user.decorator';
 import { Role } from 'src/auth/role.decorator';
@@ -8,11 +8,16 @@ import { EditOrderOutput, EditOrderInput } from './dtos/edit-order.dto';
 import { GetOrderOutput, GetOrderInput } from './dtos/get-order.dto';
 import { GetOrdersOutput, GetOrdersInput } from './dtos/get-orders.dto';
 import { OrderService } from './orders.service';
+import { PUB_SUB } from 'src/common/common.constants';
+import { Inject } from '@nestjs/common';
+import { Order } from './entities/order.entity';
 
-const pubSub = new PubSub();
-
+@Resolver(() => Order)
 export class OrderResolver {
-  constructor(private readonly orderService: OrderService) {}
+  constructor(
+    private readonly orderService: OrderService,
+    @Inject(PUB_SUB) private readonly pubSub: PubSub,
+  ) {}
 
   @Mutation(() => CreateOrderOutput)
   @Role(['Customer'])
@@ -20,7 +25,7 @@ export class OrderResolver {
     @AuthUser() customer: User,
     @Args('input') createOrderInput: CreateOrderInput,
   ): Promise<CreateOrderOutput> {
-    return this.orderService.crateOrder(customer, createOrderInput);
+    return this.orderService.createOrder(customer, createOrderInput);
   }
 
   @Query(() => GetOrdersOutput)
@@ -52,7 +57,7 @@ export class OrderResolver {
 
   @Mutation(() => Boolean)
   elsaLoveAnna() {
-    pubSub.publish('elsa', {
+    this.pubSub.publish('elsa', {
       elsaAnna: 'Elsa Love Anna.',
     });
     return true;
@@ -62,6 +67,20 @@ export class OrderResolver {
   @Role(['Any'])
   elsaAnna(@AuthUser() user: User) {
     console.log(user);
-    return pubSub.asyncIterator('elsa');
+    return this.pubSub.asyncIterator('elsa');
+  }
+
+  
+  @Mutation(() => Boolean)
+  potatoReady() {
+    this.pubSub.publish('hotPotatos', {
+      readyPotatos: 'Your potato is ready.',
+    });
+    return true;
+  }
+
+  @Subscription(() => String)
+  readyPotatos() {
+    return this.pubSub.asyncIterator('hotPotatos');
   }
 }

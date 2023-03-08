@@ -52,9 +52,11 @@ export class RestaurantService {
       );
       newRestaurant.category = category;
       await this.restaurants.save(newRestaurant);
-      return { ok: true };
+      return {
+        ok: true,
+        restaurantId: newRestaurant.id,
+      };
     } catch (error) {
-      console.log(error);
       return { ok: false, error: 'Could not create restaurant' };
     }
   }
@@ -91,7 +93,6 @@ export class RestaurantService {
       ]);
       return { ok: true };
     } catch (error) {
-      console.log(error);
       return { ok: false, error: 'Could not edit restaurant' };
     }
   }
@@ -116,8 +117,7 @@ export class RestaurantService {
       await this.restaurants.delete(restaurant.id);
       return { ok: true };
     } catch (error) {
-      console.log(error);
-      return { ok: false, error: 'Could not delete restaurant' };
+      return { ok: false };
     }
   }
 
@@ -126,7 +126,6 @@ export class RestaurantService {
       const categories = await this.categories.find();
       return { ok: true, categories };
     } catch (error) {
-      console.log(error);
       return { ok: false, error: 'Could not load categories' };
     }
   }
@@ -153,7 +152,6 @@ export class RestaurantService {
         take: 25,
         skip: (page - 1) * 25,
       });
-      category.restaurants = restaurants;
       const totalResults = await this.countRestaurants(category);
       return {
         ok: true,
@@ -162,7 +160,6 @@ export class RestaurantService {
         totalPages: Math.ceil(totalResults / 25),
       };
     } catch (error) {
-      console.log(error);
       return { ok: false, error: 'Could not load category' };
     }
   }
@@ -170,17 +167,16 @@ export class RestaurantService {
   async allRestaurants({ page }: RestaurantsInput): Promise<RestaurantsOutput> {
     try {
       const [restaurants, totalResults] = await this.restaurants.findAndCount({
-        take: 25,
-        skip: (page - 1) * 25,
+        take: 3,
+        skip: (page - 1) * 3,
       });
       return {
         ok: true,
         results: restaurants,
-        totalPages: Math.ceil(totalResults / 25),
+        totalPages: Math.ceil(totalResults / 3),
         totalResults,
       };
     } catch (error) {
-      console.log(error);
       return {
         ok: false,
         error: 'Could not load restaurants',
@@ -202,7 +198,6 @@ export class RestaurantService {
         restaurant,
       };
     } catch (error) {
-      console.log(error);
       return { ok: false, error: 'Could not find restaurant' };
     }
   }
@@ -248,7 +243,6 @@ export class RestaurantService {
           error: "You can't create dishes for the restaurant you don't own",
         };
       }
-      console.log(restaurant);
       await this.dishes.save(
         this.dishes.create({ ...createDishInput, restaurant }),
       );
@@ -285,7 +279,6 @@ export class RestaurantService {
       await this.dishes.save([{ id: editDishInput.dishId, ...editDishInput }]);
       return { ok: true };
     } catch (error) {
-      console.log(error);
       return { ok: false, error: 'Could not edit dish' };
     }
   }
@@ -299,7 +292,6 @@ export class RestaurantService {
         where: { id: dishId },
         relations: ['restaurant'],
       });
-      console.log(dish);
       if (!dish) {
         return {
           ok: false,
@@ -315,7 +307,6 @@ export class RestaurantService {
       await this.dishes.delete(dish.id);
       return { ok: true };
     } catch (error) {
-      console.log(error);
       return { ok: false, error: 'Could not delete dish' };
     }
   }
