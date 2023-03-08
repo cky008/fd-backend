@@ -8,9 +8,9 @@ import { EditOrderOutput, EditOrderInput } from './dtos/edit-order.dto';
 import { GetOrderOutput, GetOrderInput } from './dtos/get-order.dto';
 import { GetOrdersOutput, GetOrdersInput } from './dtos/get-orders.dto';
 import { OrderService } from './orders.service';
-import { PUB_SUB } from 'src/common/common.constants';
 import { Inject } from '@nestjs/common';
 import { Order } from './entities/order.entity';
+import { NEW_PENDING_ORDER, PUB_SUB } from 'src/common/common.constants';
 
 @Resolver(() => Order)
 export class OrderResolver {
@@ -55,22 +55,14 @@ export class OrderResolver {
     return this.orderService.editOrder(user, editOrderInput);
   }
 
-  @Mutation(() => Boolean)
-  elsaLoveAnna(@Args('times') times: number) {
-    this.pubSub.publish('elsa', {
-      elsaAnna: times,
-    });
-    return true;
-  }
-
-  @Subscription(() => String, {
-    filter: ({ elsaAnna }, { times }, context) => {
-      return elsaAnna === times;
+  @Subscription(() => Order, {
+    filter: ({ pendingOrders: { ownerId } }, _, { user }) => {
+      return ownerId === user.id;
     },
-    resolve: ({ elsaAnna }) => `Elsa loves Anna ${elsaAnna} times.`,
+    resolve: ({ pendingOrders: { order } }) => order,
   })
-  @Role(['Any'])
-  elsaAnna(@Args('times') times: number) {
-    return this.pubSub.asyncIterator('elsa');
+  @Role(['Owner'])
+  pendingOrders() {
+    return this.pubSub.asyncIterator(NEW_PENDING_ORDER);
   }
 }
