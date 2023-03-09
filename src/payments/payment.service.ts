@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { Cron, Interval, SchedulerRegistry, Timeout } from '@nestjs/schedule';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Restaurant } from 'src/restaurants/entities/restaurant.entity';
 import { User } from 'src/users/entities/user.entity';
@@ -17,6 +18,7 @@ export class PaymentService {
     private readonly payments: Repository<Payment>,
     @InjectRepository(Restaurant)
     private readonly restaurants: Repository<Restaurant>,
+    private schedulerRegistry: SchedulerRegistry,
   ) {}
 
   async createPayment(
@@ -31,7 +33,7 @@ export class PaymentService {
         return { ok: false, error: 'Restaurant not found' };
       }
       if (restaurant.ownerId !== owner.id) {
-        return { ok: false, error: 'You are not the restaurant owner.' };
+        return { ok: false, error: 'You are not allowed to do this.' };
       }
       await this.payments.save(
         this.payments.create({
@@ -40,6 +42,11 @@ export class PaymentService {
           restaurant,
         }),
       );
+      restaurant.isPromoted = true;
+      const date = new Date();
+      date.setDate(date.getDate() + 7);
+      restaurant.promotedUntil = date;
+      await this.restaurants.save(restaurant);
       return { ok: true };
     } catch (error) {
       return { ok: false, error: 'Could not create payment.' };
