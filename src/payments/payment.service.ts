@@ -7,6 +7,7 @@ import {
   CreatePaymentInput,
   CreatePaymentOutput,
 } from './dtos/create-payment.dto';
+import { GetPaymentsOutput } from './dtos/get-payments.dto';
 import { Payment } from './entities/payment.entity';
 
 @Injectable()
@@ -42,6 +43,20 @@ export class PaymentService {
       return { ok: true };
     } catch (error) {
       return { ok: false, error: 'Could not create payment.' };
+    }
+  }
+
+  async getPayments(user: User): Promise<GetPaymentsOutput> {
+    try {
+      const payments = await this.payments.find({
+        where: { user: { id: user.id } },
+      });
+      return {
+        ok: true,
+        payments,
+      };
+    } catch (error) {
+      return { ok: false, error: 'Could not load payments.' };
     }
   }
 }
