@@ -20,6 +20,7 @@ import { OrderItem } from './orders/entities/order-item.entity';
 import { PaymentsModule } from './payments/payments.module';
 import { Payment } from './payments/entities/payment.entity';
 import { ScheduleModule } from '@nestjs/schedule';
+import { join } from 'path';
 
 @Module({
   imports: [
@@ -46,7 +47,7 @@ import { ScheduleModule } from '@nestjs/schedule';
       introspection: process.env.NODE_ENV !== 'production',
       driver: ApolloDriver,
       cache: 'bounded',
-      autoSchemaFile: true,
+      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       subscriptions: {
         'graphql-ws': true,
         'subscriptions-transport-ws': {
